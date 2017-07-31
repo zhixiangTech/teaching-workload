@@ -1,0 +1,331 @@
+<body>
+<script src="/assets/js/theme.js"></script>
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        {{> header}}
+        <!-- 风格切换 -->
+        <div class="tpl-skiner">
+            <div class="tpl-skiner-toggle am-icon-cog">
+            </div>
+            <div class="tpl-skiner-content">
+                <div class="tpl-skiner-content-title">
+                    选择主题
+                </div>
+                <div class="tpl-skiner-content-bar">
+                    <span class="skiner-color skiner-white" data-color="theme-white"></span>
+                    <span class="skiner-color skiner-black" data-color="theme-black"></span>
+                </div>
+            </div>
+        </div>
+        <!-- 侧边导航栏 -->
+        {{> nav}}
+
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title  am-cf">课程管理</div>
+                            </div>
+                            <div class="widget-body  am-fr">
+                                <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+                                    <div class="am-form-group">
+                                        <div class="am-btn-toolbar">
+                                            <div class="am-btn-group am-btn-group-xs">
+                                                <button type="button" class="am-btn am-btn-default am-btn-success" href="javascript:void(0)" onclick="editInfo()" id="0"><span class="am-icon-plus"></span> 新增</button>
+                                                <button type="button" class="am-btn am-btn-default am-btn-danger" href="javascript:void(0)" onclick="isChecked()"><span class="am-icon-trash-o"></span> 删除</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <form id="form-search">
+                                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-3">
+                                        <div class="am-form-group tpl-table-list-select">
+                                            <select name="paramName" id="paramName" data-am-selected="{btnSize: 'sm'}">
+                                                <option value="course_node">课程编号</option>
+                                                <option value="name">课程名称</option>
+                                                <option value="formula_type">公式类型</option>
+                                                <option value="major_node">专业编号</option>
+                                                <option value="course_type">课程类型</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
+                                        <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
+                                            <input type="text" name="paramValue" id="paramValue" class="am-form-field ">
+                                            <span class="am-input-group-btn">
+                                                 <button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search" type="button" onclick="search()"></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="widget-body  widget-body-lg am-fr">
+                                    <table width="100%" class="am-table am-table-compact am-table-bordered am-table-radius am-table-striped tpl-table-black " id="example-r">
+                                        <thead>
+                                            <tr>
+                                                <th  class="am-lg-text-center"><input type="checkbox" value="0" onclick="isSelectAll()" id="{{id}}"></th>
+                                                <th>课程编号</th>
+                                                <th>课程名称</th>
+                                                <th>公式类型</th>
+                                                <th>专业编号</th>
+                                                <th>课程类型</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{#each courseList}}
+                                                <tr class="gradeX">
+                                                    <td  class="am-lg-text-center"><input type="checkbox" id="{{id}}"/></td>
+                                                    <td>{{courseNode}}</td>
+                                                    <td>{{name}}</td>
+                                                    <td>{{formulaType}}</td>
+                                                    <td>{{majorNode}}</td>
+                                                    <td>{{courseType}}</td>
+                                                    <td>
+                                                        <div class="tpl-table-black-operation">
+                                                            <a href="javascript:void(0)" onclick="queryEdit('{{id}}')" id="{{id}}">
+                                                                <i class="am-icon-pencil"></i> 编辑
+                                                            </a>
+                                                            <a href="javascript:;" onclick="deleteCourse('{{id}}')" class="tpl-table-black-operation-del">
+                                                                <i class="am-icon-trash"></i> 删除
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            {{/each}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="am-u-lg-12 am-cf">
+                                    <div class="am-fr">
+                                       {{{pageHtml}}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<div id="form-style">
+    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+        <div class="widget am-cf">
+            <div class="widget-head am-cf">
+                <div class="widget-title am-fl">课程管理</div>
+                <div class="widget-function am-fr">
+                    <a href="javascript:;" class="am-icon-cog"></a>
+                </div>
+            </div>
+            <div class="widget-body am-fr">
+                <form class="am-form tpl-form-line-form" id="courseList" ><input type="hidden" name="id" >
+                    <div class="am-form-group">
+                        <label for="user-name" class="am-u-sm-3 am-form-label">课程编号<span class="tpl-form-line-small-title">course_node</span></label>
+                        <div class="am-u-sm-7 fl">
+                            <input type="text" class="tpl-form-input" name="courseNode"  id="course_node" placeholder="请输入课程编号">
+                            <small>请填写课程编号。</small>
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label for="user-name" class="am-u-sm-3 am-form-label">课程名称<span class="tpl-form-line-small-title">name</span></label>
+                        <div class="am-u-sm-7 fl">
+                            <input type="text" class="tpl-form-input" name="name" id="name" placeholder="请输入课程名称">
+                            <small>请填写课程名称。</small>
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label for="user-phone" class="am-u-sm-3 am-form-label">公式类型 <span class="tpl-form-line-small-title">formula_type</span></label>
+                        <div class="am-u-sm-7 fl">
+                            <select data-am-selected="{searchBox: 1}" style="display: none;" name="formulaType" id="formula_type">
+                                <option value="1">类型1</option>
+                                <option value="2">类型2</option>
+                            </select>
+
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label for="user-name" class="am-u-sm-3 am-form-label">专业编号<span class="tpl-form-line-small-title">major_node</span></label>
+                        <div class="am-u-sm-7 fl">
+                            <input type="text" class="tpl-form-input" name="majorNode" id="major_node" placeholder="请输入专业编号">
+                            <small>请填写专业编号。</small>
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label for="user-phone" class="am-u-sm-3 am-form-label">课程类型 <span class="tpl-form-line-small-title">course_type</span></label>
+                        <div class="am-u-sm-7 fl">
+                            <select data-am-selected="{searchBox: 1}" style="display: none;" name="courseType" id="course_type">
+                                <option value="a">类型1</option>
+                                <option value="b">类型2</option>
+                            </select>
+
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <div class="am-u-sm-7 am-u-sm-push-3">
+                            <button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success " onclick="add()" onmouseup="closeWindow()">提交</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    $(function () {
+        if (GetQueryString('paramName') != null){
+            var paramArr = GetQueryString('paramName').split('-');
+            $('#paramName').val(paramArr[0]);
+            $('#paramValue').val(paramArr[1]);
+        }
+    });
+
+    /*
+    * 编辑课程信息
+    * */
+    function queryEdit(id) {
+        $.ajax({
+            type: 'get',
+            url: 'course/editCourseInfo?id='+id,
+            success: function (data) {
+                editInfo();
+                $('#courseList input[name=id]').val(data.id);
+                $('#courseList input[name=courseNode]').val(data.courseNode);
+                $('#courseList input[name=name]').val(data.name);
+                $('#courseList input[name=formulaType]').val(data.formulaType);
+                $('#courseList input[name=majorNode]').val(data.majorNode);
+                $('#courseList input[name=courseType]').val(data.courseType);
+            }
+        });
+    }
+
+    /*
+    * 弹窗编辑信息
+    * */
+    function editInfo() {
+        $('#courseList input').val("");
+        layer.open({
+            type: 1,
+            title: '编辑',
+            skin: 'layui-layer-rim', //加上边框
+            area: ['800px', '600px'], //宽高
+            maxmin: true,
+            resize: false,
+            content: $('#form-style')
+        });
+    }
+
+    /*
+    * 添加课程信息
+    * */
+    function add() {
+        $.ajax({
+            type: 'post',
+            url: 'course/addCourseInfo',
+            data: $('#courseList').serialize(),
+            dataType: 'JSON',
+            success: function () {}
+        });
+        window.location.reload();
+    }
+
+    /*
+    * 关闭弹窗
+    * */
+    function closeWindow() {
+        layer.closeAll();
+    }
+
+    /*
+    * 查询
+    * */
+    function search() {
+        $.ajax({
+            type:'get',
+            url:'course',
+            data:$('#form-search').serialize(),
+            dataType:'JSON',
+            success:function (data) {
+                if (data.paramValue != ''){
+                    window.location.href = 'course?paramName='+ data.paramName + '-'+data.paramValue;
+                } else {
+                    window.location.href = 'course';
+                }
+            }
+        });
+    }
+
+    /*
+    * 删除单条课程信息
+    * */
+    function deleteCourse(id) {
+        layer.confirm('是否删除?', {
+            btn: ['确定','取消'] //按钮
+        },function () {
+            $.post('/admin/course/deleteCourseInfo?id='+id,function (err, data) {
+                if(data == "success"){
+                    layer.msg('删除成功!', {icon: 1});
+                    window.location.reload();
+                }else {
+                    layer.msg('删除失败!', {icon: 2});
+                }
+            });
+        });
+    }
+
+    /*
+    * 删除所选行
+    * */
+    function isChecked() {
+        var oCheckTable = document.getElementsByClassName('gradeX');
+        var isChecked = new Array();
+        var checkedNum = 0;
+        for(var i=1;i<oCheckTable.length+1;i++){
+            if ($("#example-r input[type='checkbox']")[i].checked){
+                isChecked[checkedNum++]= $("#example-r input[type='checkbox']")[i].id;
+            }
+        }
+        if(checkedNum!=0){
+            layer.confirm('是否删除?', {
+                btn: ['确定','取消'] //按钮
+            },function () {
+                for (var i=0;i<checkedNum;i++){
+                    $.post('course/deleteCourseInfo?id='+isChecked[i],function (err, data) {
+                        if(data == "success"){
+                            layer.msg('删除成功!', {icon: 1});
+                            window.location.reload();
+                        }else {
+                            layer.msg('删除失败!', {icon: 2});
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    /*
+    * 全选与不选
+    * */
+    function isSelectAll() {
+        var oCheckTable = document.getElementsByClassName('gradeX');
+        if($("#example-r input[type='checkbox']")[0].checked){
+            for (var i=1;i<oCheckTable.length+1;i++){
+                $("#example-r input[type='checkbox']")[i].checked ="checked"
+            }
+        }else {
+            for (var i=1;i<oCheckTable.length+1;i++){
+                $("#example-r input[type='checkbox']")[i].checked =""
+            }
+        }
+
+    }
+</script>

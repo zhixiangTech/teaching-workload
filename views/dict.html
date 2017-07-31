@@ -1,0 +1,319 @@
+
+<body>
+<script src="/assets/js/theme.js"></script>
+<div class="am-g tpl-g">
+    <!-- 头部 -->
+    {{> header}}
+    <!-- 风格切换 -->
+    <div class="tpl-skiner">
+        <div class="tpl-skiner-toggle am-icon-cog">
+        </div>
+        <div class="tpl-skiner-content">
+            <div class="tpl-skiner-content-title">
+                选择主题
+            </div>
+            <div class="tpl-skiner-content-bar">
+                <span class="skiner-color skiner-white" data-color="theme-white"></span>
+                <span class="skiner-color skiner-black" data-color="theme-black"></span>
+            </div>
+        </div>
+    </div>
+    <!-- 侧边导航栏 -->
+    {{> nav}}
+    <!-- 内容区域 -->
+    <div class="tpl-content-wrapper">
+        <div class="row-content am-cf">
+            <div class="row">
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                    <div class="widget am-cf">
+                        <div class="widget-head am-cf">
+                            <div class="widget-title  am-cf">字典数据</div>
+                        </div>
+                        <div class="widget-body  am-fr">
+
+                            <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+                                <div class="am-form-group">
+                                    <div class="am-btn-toolbar">
+                                        <div class="am-btn-group am-btn-group-xs">
+                                            <button type="button" class="am-btn am-btn-default am-btn-success" href="javascript:void(0)" onclick="queryInfo('{{id}}')"><span class="am-icon-plus"></span> 新增</button>
+                                            <button type="button" class="am-btn am-btn-default am-btn-danger" onclick="Delete()"><span class="am-icon-trash-o"></span> 删除</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <form id="form-search">
+                                <div class="am-u-sm-12 am-u-md-6 am-u-lg-3">
+                                    <div class="am-form-group tpl-table-list-select">
+                                        <select name="paramName" id="paramName" data-am-selected="{btnSize: 'sm'}">
+                                            <option value="id">编号</option>
+                                            <option value="description">描述</option>
+                                            <option value="type">类型</option>
+                                            <option value="label">标签</option>
+                                            <option value="value">值</option>
+                                            <option value="sort">排序</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
+                                    <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
+                                        <input type="text" name="paramValue" id="paramValue" class="am-form-field ">
+                                        <span class="am-input-group-btn">
+												<button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search" type="button" onclick="search()"></button>
+										  	</span>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="widget-body  widget-body-lg am-fr">
+
+                                <table width="100%" class="am-table am-table-compact am-table-bordered am-table-radius am-table-striped tpl-table-black " id="example-r">
+                                    <thead>
+                                    <tr>
+                                        <th class="am-lg-text-center"><input type="checkbox" onclick="deleteAll()" name="{{id}}" /></th>
+                                        <th>编号</th>
+                                        <th>描述</th>
+                                        <th>类型</th>
+                                        <th>标签</th>
+                                        <th>值</th>
+                                        <th>排序</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="table-custom">
+                                    {{#each dictList}}
+                                    <tr class="gradeX">
+                                        <td class="am-lg-text-center"><input type="checkbox" name="{{id}}" /></td>
+                                        <td>{{id}}</td>
+                                        <td>{{description}}</td>
+                                        <td>{{type}}</td>
+                                        <td>{{label}}</td>
+                                        <td>{{value}}</td>
+                                        <td>{{sort}}</td>
+                                        <td>
+                                            <div class="tpl-table-black-operation">
+                                                <a href="javascript:void(0)" onclick="queryInfo('{{id}}') ">
+                                                    <i class="am-icon-pencil"></i> 编辑
+                                                </a>
+                                                <a href="javascript:;" class="tpl-table-black-operation-del" onclick="deleteBtn('{{id}}','{{value}}')">
+                                                    <i class="am-icon-trash"></i> 删除
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {{/each}}
+                                    <!-- more data -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="am-u-lg-12 am-cf">
+
+                                <div class="am-fr">
+                                    {{{pageHtml}}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+ <div id="form-style">
+    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+        <div class="widget am-cf">
+            <div class="widget-head am-cf">
+                <div class="widget-title am-fl">字典数据</div>
+                <div class="widget-function am-fr">
+                    <a href="javascript:;" class="am-icon-cog"></a>
+                </div>
+            </div>
+            <div class="widget-body am-fr">
+                <form class="am-form tpl-form-line-form demoform" id="form-dict">
+                    <input type="hidden" name="id" />
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">描述<span class="tpl-form-line-small-title">description</span></label>
+                        <div class="am-u-sm-7 fl">
+                            <input type="text" class="tpl-form-input" id="description" name="description" placeholder="请输入描述">
+                            <small>请输入描述。</small>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">类型<span class="tpl-form-line-small-title">type</span></label>
+                        <div class="am-u-sm-7 fl">
+                            <input type="text" class="tpl-form-input" id="type" name="type" placeholder="请输入类型">
+                            <small>请输入类型。</small>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">标签<span class="tpl-form-line-small-title">label</span></label>
+                        <div class="am-u-sm-7 fl">
+                            <input type="text" class="tpl-form-input" id="label" name="label" placeholder="请输入标签">
+                            <small>请输入标签。</small>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">值<span class="tpl-form-line-small-title">value</span></label>
+                        <div class="am-u-sm-7 fl">
+                            <input type="text" class="tpl-form-input" id="value" name="value" placeholder="请输入值">
+                            <small>请填写值。</small>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">排序<span class="tpl-form-line-small-title">sort</span></label>
+                        <div class="am-u-sm-7 fl">
+                            <input type="text" class="tpl-form-input" id="sort" name="sort" placeholder="请输入排序">
+                            <small>请输入排序。</small>
+                        </div>
+                    </div>
+
+                    <!--<div class="am-form-group">-->
+                        <!--<label class="am-u-sm-3 am-form-label">type <span class="tpl-form-line-small-title">type</span></label>-->
+                        <!--<div class="am-u-sm-7 fl">-->
+                            <!--<select data-am-selected="{searchBox: 1}" style="display: none;" name="type">-->
+                                <!--<option value="a">信息与电子工程学院</option>-->
+                                <!--<option value="b">夕风色</option>-->
+                                <!--<option value="c">Orange</option>-->
+                            <!--</select>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <div class="am-form-group">
+                        <div class="am-u-sm-7 am-u-sm-push-3">
+                            <button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success " onclick="save()">提交</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        if (GetQueryString('paramName') != null){
+            var paramArr = GetQueryString('paramName').split('-');
+            $('#paramName').val(paramArr[0]);
+            $('#paramValue').val(paramArr[1]);
+        }
+    });
+    function queryInfo(id){
+        $.ajax({
+            type:"get",
+            url:"dict/queryInfo?id="+id,
+            success:function(data){
+                formTable();
+                var id = $("input[name='id']").val(data.id);
+                var value = $("input[name='value']").val(data.value);
+                var label = $("input[name='label']").val(data.label);
+                var type = $("input[name='type']").val(data.type);
+                var description = $("input[name='description']").val(data.description);
+                var sort = $("input[name='sort']").val(data.sort);
+            }
+        });
+    }
+    function save(id) {
+        $.ajax({
+            type:"post",
+            url:"dict/saveDict",
+            data:$('#form-dict').serialize(),
+            dataType:'Json',
+            success:function(data){
+                layer.closeAll();
+                if(data.states == 'error'){
+                    layer.msg(data.msg,{icon: 2});
+                }else{
+                    var id = $("input[name='id']").val();
+                    var value = $("input[name='value']").val();
+                    var label = $("input[name='label']").val();
+                    var type = $("input[name='type']").val();
+                    var description = $("input[name='description']").val();
+                    var sort = $("input[name='sort']").val();
+                    //alert("保存成功!");
+                    layer.msg(data.msg,{icon: 1});
+                    //window.location.href = "department"
+                    window.location.reload();
+                }
+            }
+        });
+    }
+    function deleteBtn(id,value) {
+        layer.confirm('是否删除【'+value+'】?',{
+            btn:['确定','取消']
+        },function () {
+            $.post('/admin/dict/deletedict?id='+id,function (err,data) {
+                if(data=="success"){
+                    layer.msg('删除成功',{icon: 1});
+                    window.location.reload();
+                }else{
+                    layer.msg('删除失败',{icon: 2});
+                }
+            });
+        });
+    }
+    function Delete() {
+        var oCheckTable = document.getElementsByClassName("gradeX");
+        var iCheck = new Array();
+        var checkNum = 0;
+        for (var i = 1; i < oCheckTable.length + 1; i++) {
+            if ($("#example-r input[type='checkbox']")[i].checked) {
+                iCheck[checkNum] = $("#example-r input[type='checkbox']")[i].name;
+                checkNum += 1;
+            }
+        }
+        layer.confirm('是否删除?', {
+            btn: ['确定', '取消']
+        }, function () {
+            for (var i = 0; i < checkNum; i++) {
+                $.post('/admin/dict/deletedict?id='+iCheck[i],function (err,data) {
+                    if (data == "success") {
+                        layer.msg('删除成功', {icon: 1});
+                        window.location.reload();
+                    } else {
+                        layer.msg('删除失败', {icon: 2});
+                    }
+                });
+            }
+        });
+    }
+    function deleteAll() {
+        var oCheckTable = document.getElementsByClassName("gradeX");
+        if($("#example-r input[type='checkbox']")[0].checked) {
+            for (var i = 1; i < oCheckTable.length + 1; i++) {
+                $("#example-r input[type='checkbox']")[i].checked = "checked";
+            }
+        }else {
+            for (var i = 1; i < oCheckTable.length + 1; i++) {
+                $("#example-r input[type='checkbox']")[i].checked = "";
+            }
+        }
+
+    }
+    function formTable() {
+        layer.open({
+            type: 1,
+            title: '编辑',
+            skin: 'layui-layer-rim', //加上边框
+            area: ['800px', '600px'], //宽高
+            maxmin: true,
+            resize: false,
+            content: $('#form-style')
+        });
+    }
+    function search() {
+        $.ajax({
+            type:'get',
+            url:'dict',
+            data:$('#form-search').serialize(),
+            dataType:'JSON',
+            success:function (data) {
+                if (data.paramValue != ''){
+                    window.location.href = 'dict?paramName='+ data.paramName + '-'+data.paramValue;
+                } else {
+                    window.location.href='dict';
+                }
+
+            }
+        })
+    }
+
+</script>

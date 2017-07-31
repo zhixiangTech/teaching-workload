@@ -1,0 +1,277 @@
+
+	<body data-type="widgets">
+	<script src="/assets/js/theme.js"></script>
+	<div class="am-g tpl-g">
+		<!-- 头部 -->
+		{{> header}}
+		<!-- 风格切换 -->
+		<div class="tpl-skiner">
+			<div class="tpl-skiner-toggle am-icon-cog">
+			</div>
+			<div class="tpl-skiner-content">
+				<div class="tpl-skiner-content-title">
+					选择主题
+				</div>
+				<div class="tpl-skiner-content-bar">
+					<span class="skiner-color skiner-white" data-color="theme-white"></span>
+					<span class="skiner-color skiner-black" data-color="theme-black"></span>
+				</div>
+			</div>
+		</div>
+		<!-- 侧边导航栏 -->
+		{{> nav}}
+		<!-- 内容区域 -->
+			<div class="tpl-content-wrapper">
+				<div class="row-content am-cf">
+					<div class="row">
+						<div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+							<div class="widget am-cf">
+								<div class="widget-head am-cf">
+									<div class="widget-title  am-cf">教师管理</div>
+								</div>
+								<div class="widget-body  am-fr">
+
+									<div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+										<div class="am-form-group">
+											<div class="am-btn-toolbar">
+												<div class="am-btn-group am-btn-group-xs">
+													<button type="button" class="am-btn am-btn-default am-btn-success" href="javascript:void(0)" onclick="formTable()"><span class="am-icon-plus"></span> 新增</button>
+													<button type="button" class="am-btn am-btn-default am-btn-danger" onclick="deleteBatch()"><span class="am-icon-trash-o"></span> 删除</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<form id="form-search">
+									<div class="am-u-sm-12 am-u-md-6 am-u-lg-3">
+										<div class="am-form-group tpl-table-list-select">
+											<select name="paramName" id="paramName" data-am-selected="{btnSize: 'sm'}">
+												<option value="node">教工号</option>
+												<option value="name">姓名</option>
+												<option value="department">部门</option>
+												<option value="state">状态</option>
+											</select>
+										</div>
+									</div>
+									<div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
+										<div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
+											<input type="text" name="paramValue" id="paramValue" class="am-form-field ">
+											<span class="am-input-group-btn">
+												<button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search" type="button" onclick="search()"></button>
+										  	</span>
+										</div>
+									</div>
+									</form>
+									<div class="widget-body  widget-body-lg am-fr">
+
+										<table width="100%" class="am-table am-table-compact am-table-bordered am-table-radius am-table-striped tpl-table-black " id="example-r">
+											<thead>
+												<tr>
+													<th class="am-lg-text-center"><input type="checkbox" onclick="checkAll(this)" /></th>
+													<th>教工号</th>
+													<th>姓名</th>
+													<th>部门</th>
+													<th>状态</th>
+													<th>操作</th>
+												</tr>
+											</thead>
+											<tbody id="table-custom">
+											{{#each teacherList}}
+												<tr class="gradeX">
+													<td class="am-lg-text-center"><input type="checkbox" name="{{id}}" /></td>
+													<td>{{node}}</td>
+													<td>{{name}}</td>
+													<td>{{department}}</td>
+													<td><span class="am-badge am-badge-success am-radius">已完成{{state}}</span></td>
+													<td>
+														<div class="tpl-table-black-operation">
+															<a href="javascript:void(0)" onclick="queryInfo('{{id}}')">
+																<i class="am-icon-pencil"></i> 编辑
+															</a>
+															<a href="javascript:;" class="tpl-table-black-operation-del" onclick="deleteBtn('{{id}}','{{name}}','{{node}}')">
+																<i class="am-icon-trash"></i> 删除
+															</a>
+														</div>
+													</td>
+												</tr>
+											{{/each}}
+												<!-- more data -->
+											</tbody>
+										</table>
+									</div>
+									<div class="am-u-lg-12 am-cf">
+
+										<div class="am-fr">
+											{{{pageHtml}}}
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="form-style">
+			<div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+				<div class="widget am-cf">
+					<div class="widget-head am-cf">
+						<div class="widget-title am-fl">教师管理</div>
+						<div class="widget-function am-fr">
+	                        <a href="javascript:;" class="am-icon-cog"></a>
+	                    </div>
+					</div>
+					<div class="widget-body am-fr">
+						<form class="am-form tpl-form-line-form demoform" id="form-teacherList">
+							<input type="hidden" name="id" />
+							<div class="am-form-group">
+								<label class="am-u-sm-3 am-form-label">教工号<span class="tpl-form-line-small-title">node</span></label>
+								<div class="am-u-sm-7 fl">
+									<input type="text" class="tpl-form-input" id="node" name="node" placeholder="请输入教工号">
+									<small>请填写教工号。</small>
+								</div>
+							</div>
+							<div class="am-form-group">
+								<label class="am-u-sm-3 am-form-label">姓名<span class="tpl-form-line-small-title">name</span></label>
+								<div class="am-u-sm-7 fl">
+									<input type="text" class="tpl-form-input" id="name" name="name" placeholder="请输入教师姓名">
+									<small>请输入教师姓名。</small>
+								</div>
+							</div>
+							<div class="am-form-group">
+								<label class="am-u-sm-3 am-form-label">部门 <span class="tpl-form-line-small-title">department</span></label>
+								<div class="am-u-sm-7 fl">
+									<select data-am-selected="{searchBox: 1}" style="display: none;" name="department">
+										<option value="a">信息与电子工程学院</option>
+										<option value="b">夕风色</option>
+										<option value="c">Orange</option>
+									</select>
+								</div>
+							</div>
+							<div class="am-form-group">
+								<div class="am-u-sm-7 am-u-sm-push-3">
+									<button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success " onclick="save()">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		$(function () {
+			if (GetQueryString('paramName') != null){
+				var paramArr = GetQueryString('paramName').split('-');
+				$('#paramName').val(paramArr[0]);
+				$('#paramValue').val(paramArr[1]);
+			}
+		});
+		function checkAll(obj){
+			$("#table-custom input[type='checkbox']").prop('checked', $(obj).prop('checked'));
+		}
+		function search() {
+			$.ajax({
+				type:'get',
+				url:'teacherList',
+				data:$('#form-search').serialize(),
+				dataType:'JSON',
+				success:function (data) {
+					if (data.paramValue != ''){
+						window.location.href = 'teacherList?paramName='+ data.paramName + '-'+data.paramValue;
+					} else {
+						window.location.href = 'teacherList';
+					}
+				}
+			})
+		}
+		function save() {
+				$.ajax({
+					type: 'POST',
+					url: 'teacherList/saveTeacherInfo',
+					data: $('#form-teacherList').serialize(),
+					dataType: 'json',
+					success: function (data) {
+						layer.closeAll();
+						if (data.state == 'error'){
+							layer.msg(data.msg, {icon: 2});
+
+						}else {
+							$("input[name=id]").val();
+							$("input[name=node]").val();
+							$("input[name=name]").val();
+							layer.msg(data.msg, {icon: 1});
+							window.location.reload();
+						}
+					}
+				});
+		}
+		function queryInfo(id) {
+			$.ajax({
+				type: 'GET',
+				url: 'teacherList/queryInfo?id='+id,
+				success: function (data) {
+					formTable();
+					$("input[name=id]").val(data.id);
+					$("input[name=node]").val(data.node);
+					$("input[name=name]").val(data.name);
+				}
+			})
+		}
+		function formTable() {
+			layer.open({
+				type: 1,
+				title: '编辑',
+				skin: 'layui-layer-rim', //加上边框
+				area: ['800px', '600px'], //宽高
+				maxmin: true,
+				resize: false,
+				content: $('#form-style')
+			});
+		}
+		function deleteBtn(id,name,node){
+			layer.confirm('是否删除【'+node+'-'+name+'】?', {
+				btn: ['确定','取消'] //按钮
+			}, function(){
+				$.get('/admin/teacherList/deleteInfo?id='+id,function (err, data) {
+					if(data == "success"){
+						window.location.reload();
+						layer.msg('删除成功!', {icon: 1});
+
+					}else {
+						layer.msg('删除失败!', {icon: 2});
+					}
+				});
+
+			});
+		}
+		function deleteBatch() {
+			layer.confirm('是否全部删除?', {
+				btn: ['确定','取消'] //按钮
+			}, function(){
+			var checkboxArr = $("#table-custom input[type='checkbox']");
+			var id = [];
+			var j=0;
+			for (var i=0;i<checkboxArr.length;i++){
+				if(checkboxArr.eq(i).is(':checked') == true){
+					var idstr = checkboxArr.eq(i).attr('name');
+					id[j] = idstr;
+					j++;
+				}
+			}
+			$.ajax({
+				type:'get',
+				url:'/admin/teacherList/deleteInfoBatch?id='+id,
+				success:function (data) {
+					if(data.state == "success"){
+						window.location.reload();
+						layer.msg('删除成功!', {icon: 1});
+
+					}else {
+						layer.msg('删除失败!', {icon: 2});
+					}
+				}
+			})
+			});
+		}
+	</script>
