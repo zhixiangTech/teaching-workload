@@ -13,27 +13,17 @@ var bodyParser = require('body-parser');
 var cookieSession = require("cookie-session");
 
 //路由引入
-var loginRoute = require('./src/routes/loginRoute');
-var indexRedirect = require('./src/routes/indexRedirect');
-var adminRoute = require('./src/routes/adminRoute');
-var teacherRoute = require('./src/routes/teacherRoute');
-var courseList = require('./src/routes/courseRoute');
-var departmentRoute=require('./src/routes/departmentRoute');
-var formulaRoute = require('./src/routes/formulaRoute');
-var departmentRoute = require('./src/routes/departmentRoute');
-var teachingTaskRoute = require('./src/routes/teachingTaskRoute');
-var dictRoute=require('./src/routes/dictRoute');
-
+var routeTest = require('./src/routes/routeTest');
 
 //初始化
 var app = express();
 
 //视图模板引擎-handerbars
-var tag = require('./src/core/tag');
+//var tag = require('./src/core/tag');
 var handlebars = require("express3-handlebars").create({
-    defaultLayout: "main",
+    //defaultLayout: "main",
     extname: ".html",
-    helpers:tag
+    //helpers:tag //helpers
 });
 
 // view engine setup---开发项目适合很多我们要保护的项目的技术特征
@@ -65,39 +55,25 @@ app.use(cookieSession({
 app.use(express.static(path.join(__dirname, 'public')));
 
 //登录拦截
-app.use(function(req,res,next){
-    var json = req.session.admin;
-    var url = req.url;
-    if(url.indexOf("admin")!=-1){//是需要拦截的,如果你URL地址包含admin这个关键词
-        if(!json){//如果没有登录
-            if(req.xhr){
-                res.send("logout");
-            }  else{
-                res.redirect("/login");
-            }
-        }
-    }
-    res.locals.admin = json;
-    next();
-});
+
+
+//权限拦截
+
 
 //路由注册
-app.use('/', indexRedirect);
-app.use('/login', loginRoute);
-app.use('/admin', adminRoute);
-app.use('/admin/teacherList', teacherRoute);
-app.use('/admin/course', courseList);
-app.use('/admin/department', departmentRoute);
-app.use('/admin/formula', formulaRoute);
-app.use('/admin/teachingTask', teachingTaskRoute);
-app.use('/admin/dict',dictRoute);
-
+app.use('/', routeTest);
 
 //404异常处理
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
+});
+//403异常处理
+app.use(function(req, res, next) {
+    var err = new Error('403');
+    err.status = 403;
+    next(err);
 });
 
 //服务器500错误
@@ -115,7 +91,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render('error',{errData:err.message});
 });
 
 module.exports = app;
