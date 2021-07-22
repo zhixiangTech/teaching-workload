@@ -16,7 +16,7 @@
     "morgan": "~1.8.1",
     "node-xlsx": "^0.12.1",
     "serve-favicon": "~2.4.2",
-    "xlsx": "^0.13.1"
+    "xlsx": "^0.17.0"
   },
   "devDependencies": {
     "async": "^2.5.0",
